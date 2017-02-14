@@ -1,0 +1,32 @@
+{
+  "name": "game-framework",
+  "version": "1.0.0",
+  "description": "A basic multiplayer game framework",
+  "main": "server.js",
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/penumbragames/game-framework.git"
+  },
+  "author": {
+    "name": "Alvin Lin",
+    "email": "alvin@omgimanerd.tech",
+    "url": "http://omgimanerd.tech"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/penumbragames/game-framework/issues"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "gulp": "^3.9.1",
+    "gulp-gjslint": "^0.1.5",
+    "merge-stream": "^1.0.1",
+    "morgan": "^1.8.1",
+    "pug": "^2.0.0-beta11",
+    "socket.io": "^1.7.2",
+    "vectors": "^0.1.0"
+  }
+}
