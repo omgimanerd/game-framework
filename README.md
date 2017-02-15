@@ -21,4 +21,7 @@ This is a generic multiplayer game framework used by us.
   - Alvin Lin (omgimanerd)
   - Kenneth Li (noobbyte)
 
-&copy; 2015 Penumbra Games
+## License
+[MIT](https://opensource.org/licenses/MIT)
+
+&copy; 2017 Penumbra Games
