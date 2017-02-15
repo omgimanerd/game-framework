@@ -12,8 +12,9 @@
  *   draw to.
  * @constructor
  */
-function Drawing(context) {
+function Drawing(context, images) {
   this.context = context;
+  this.images = images;
 }
 
 /**

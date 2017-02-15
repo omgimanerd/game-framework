@@ -12,6 +12,19 @@ function Util() {
 }
 
 /**
+ * Binds a function to a context, useful for assigning event handlers and
+ * function callbacks.
+ * @param {Object} context The context to assign the method to.
+ * @param {function(?)} method The method to bind the context to.
+ * @return {function(?)}
+ */
+Util.bind = function(context, method) {
+  return function() {
+    return method.apply(context, arguments);
+  }
+};
+
+/**
  * This method returns the sign of a number.
  * @param {number} x The number to check.
  * @return {number}
@@ -23,27 +36,6 @@ Util.getSign = function(x) {
     return -1;
   }
   return 0;
-};
-
-/**
- * Generates and returns a UID.
- * @param {?number=} length An optional length parameter for the UID to
- *   to generate. If the length is not provided, this function will return a
- *   UID of length 32.
- * @return {string}
- */
-Util.generateUID = function(length) {
-  if (!length) {
-    length = 32;
-  }
-  var choice = 'abcdefghijklmnopqrstuvwxyz' +
-               'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
-               '1234567890';
-  var uid = '';
-  for (var i = 0; i < length; ++i) {
-    uid += choice.charAt(Math.floor(Math.random() * choice.length));
-  }
-  return uid;
 };
 
 /**
@@ -60,42 +52,52 @@ Util.linearScale = function(x, a1, a2, b1, b2) {
 };
 
 /**
- * Returns the Manhattan Distance between two points given their x and y
- * coordinates.
- * @param {number} x1 The x-coordinate of the first point.
- * @param {number} y1 The y-coordinate of the first point.
- * @param {number} x2 The x-coordinate of the second point.
- * @param {number} y2 The y-coordinate of the second point.
+ * Returns the sum of all the elements in an array.
+ * @param {Array.<number>} array An array to sum.
  * @return {number}
  */
-Util.getManhattanDistance = function(x1, y1, x2, y2) {
-  return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+Util.sum = function(array) {
+  return array.reduce((total, value) =>  total + value);
+}
+
+/**
+ * Returns the Manhattan Distance between two points.
+ * @param {Array.<number>} p1 The first point.
+ * @param {Array.<number>} p2 The second point.
+ * @return {number}
+ */
+Util.getManhattanDistance = function(p1, p2) {
+  if (p1.length != p2.length) {
+    throw new Error(`Cannot compute distance between ${p1} and ${p2}`);
+  }
+  return Util.sum(p1.map((value, index) => {
+    return Math.abs(value - p2[index]);
+  }));
 };
 
 /**
- * Returns the squared Euclidean distance between two points given their
- * x and y coordinates.
- * @param {number} x1 The x-coordinate of the first point.
- * @param {number} y1 The y-coordinate of the first point.
- * @param {number} x2 The x-coordinate of the second point.
- * @param {number} y2 The y-coordinate of the second point.
+ * Returns the squared Euclidean distance between two points.
+ * @param {Array.<number>} p1 The first point.
+ * @param {Array.<number>} p2 The second point.
  * @return {number}
  */
-Util.getEuclideanDistance2 = function(x1, y1, x2, y2) {
-  return ((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2));
+Util.getEuclideanDistance2 = function(p1, p2) {
+  if (p1.length != p2.length) {
+    throw new Error(`Cannot compute distance between ${p1} and ${p2}`);
+  }
+  return Util.sum(p1.map((value, index) => {
+    return (value - p2[index]) * (value - p2[index]);
+  }));
 };
 
 /**
- * Returns the true Euclidean distance between two points given their
- * x and y coordinates.
- * @param {number} x1 The x-coordinate of the first point.
- * @param {number} y1 The y-coordinate of the first point.
- * @param {number} x2 The x-coordinate of the second point.
- * @param {number} y2 The y-coordinate of the second point.
+ * Returns the true Euclidean distance between two points.
+ * @param {Array.<number>} p1 The first point.
+ * @param {Array.<number>} p2 The second point.
  * @return {number}
  */
-Util.getEuclideanDistance = function(x1, y1, x2, y2) {
-  return Math.sqrt(Util.getEuclideanDistance2(x1, y1, x2, y2));
+Util.getEuclideanDistance = function(p1, p2) {
+  return Math.sqrt(Util.getEuclideanDistance2(p1, p2));
 };
 
 /**

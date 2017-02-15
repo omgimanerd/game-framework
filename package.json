@@ -23,6 +23,7 @@
     "express": "^4.14.1",
     "gulp": "^3.9.1",
     "gulp-gjslint": "^0.1.5",
+    "hashmap": "^2.0.6",
     "merge-stream": "^1.0.1",
     "morgan": "^1.8.1",
     "pug": "^2.0.0-beta11",
