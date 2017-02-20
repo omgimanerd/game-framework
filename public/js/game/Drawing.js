@@ -21,7 +21,16 @@ function Drawing(context, images) {
  * @const
  * @type {string}
  */
-Drawing.BASE_IMG_URL = '/public/img/';
+Drawing.BASE_URL = '/public/img/';
+
+/**
+ * Example:
+ * Drawing.SRCS = {
+ *   background: 'background.png',
+ *   player: 'player.png'
+ * };
+ */
+Drawing.SRCS = {};
 
 /**
  * This is a factory method for creating a Drawing object.
@@ -30,7 +39,17 @@ Drawing.BASE_IMG_URL = '/public/img/';
  * @return {Drawing}
  */
 Drawing.create = function(context) {
-  return new Drawing(context);
+  var images = {};
+  for (var key in Drawing.SRCS) {
+    if (typeof(Drawing.SRCS[key]) === 'string') {
+      images[key] = Drawing.createImage(Drawing.BASE_URL + Drawing.SRCS[key]);
+    } else {
+      images[key] = Drawing.SRCS[key].map((src) => {
+        return Drawing.createImage(Drawing.BASE_URL + src);
+      });
+    }
+  }
+  return new Drawing(context, images);
 };
 
 /**
@@ -50,6 +69,15 @@ Drawing.createImage = function(src, width, height) {
  * Clears the canvas context.
  */
 Drawing.prototype.clear = function() {
-  this.context.clearRect(
-      0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
+  this.context.clearRect(0, 0, Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT);
 };
+
+/**
+ * Example draw function.
+ */
+// Drawing.prototype.drawPlayer = function(x, y, size) {
+//   this.context.save();
+//   this.context.translate(x, y);
+//   this.context.drawImage(this.images['player'], -size / 2, -size / 2, size, size);
+//   this.context.restore();
+// };

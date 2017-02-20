@@ -16,7 +16,7 @@ Input.LEFT_CLICK = false;
 /** @type {boolean} */
 Input.RIGHT_CLICK = false;
 /** @type {Array<number>} */
-Input.MOUSE = [];
+Input.MOUSE = [0, 0];
 
 /** @type {boolean} */
 Input.LEFT = false;
@@ -30,9 +30,9 @@ Input.DOWN = false;
 Input.MISC_KEYS = {};
 
 /**
- * This method is a callback bound to the onmousedown event on the document
+ * This method is a callback bound to the onmousedown event
  * and updates the state of the mouse click stored in the Input class.
- * @param {Event} event The event passed to this function.
+ * @param {Event} event The event passed to this function
  */
 Input.onMouseDown = function(event) {
   if (event.which == 1) {
@@ -45,7 +45,7 @@ Input.onMouseDown = function(event) {
 };
 
 /**
- * This method is a callback bound to the onmouseup event on the document and
+ * This method is a callback bound to the onmouseup event on and
  * updates the state of the mouse click stored in the Input class.
  * @param {Event} event The event passed to this function.
  */
@@ -121,21 +121,23 @@ Input.onKeyUp = function(event) {
  * class to track user input.
  * @param {Element} element The element to apply the event listener to.
  */
-Input.applyEventHandlers = function(element) {
-  element.setAttribute('tabindex', 1);
-  element.addEventListener('mousedown', Input.onMouseDown);
-  element.addEventListener('mouseup', Input.onMouseUp);
-  element.addEventListener('keyup', Input.onKeyUp);
-  element.addEventListener('keydown', Input.onKeyDown);
+Input.applyEventHandlers = function() {
+  document.addEventListener('mousedown', Input.onMouseDown);
+  document.addEventListener('mouseup', Input.onMouseUp);
+  document.addEventListener('keyup', Input.onKeyUp);
+  document.addEventListener('keydown', Input.onKeyDown);
 };
 
 /**
  * This should be called any time an element needs to track mouse coordinates
- * over it.
- * @param {Element} element The element to apply the event listener to.
+ * over it. The event listener will be applied to the entire document, but the
+ * the coordinates will be taken relative to the given element (using the given
+ * element's top left as [0, 0]).
+ * @param {Element} element The element to take the coordinates relative to.
  */
 Input.addMouseTracker = function(element) {
-  element.addEventListener('mousemove', function(event) {
-    Input.MOUSE = [event.offsetX, event.offsetY];
+  document.addEventListener('mousemove', (event) => {
+    Input.MOUSE = [event.pageX - element.offsetLeft,
+                   event.pageY - element.offsetTop];
   });
 };

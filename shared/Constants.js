@@ -14,12 +14,6 @@ function Constants() {
 
 /**
  * @const
- * @type {string}
- */
-Constants.BIG_FUCKUP_ERROR = "This should not happen! Tell Alvin immediately!";
-
-/**
- * @const
  * @type {number}
  */
 Constants.CANVAS_WIDTH = 800;
