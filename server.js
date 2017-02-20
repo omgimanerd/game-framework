@@ -34,13 +34,7 @@ app.use('/', (request, response) => {
  * game based on the input it receives. Everything runs asynchronously with
  * the game loop.
  */
-io.on('connection', (socket) => {
-  socket.on('player-join', (data, callback) => {
-  });
-
-  socket.on('disconnect', function() {
-  });
-});
+io.on('connection', game.getSocketCallback());
 
 /**
  * Server side game loop.
