@@ -9,18 +9,13 @@
  * @constructor
  * @param {Object} socket The socket connected to the server.
  * @param {Drawing} drawing The Drawing object that will render the game.
- * @param {ViewPort} viewPort The ViewPort object that will manage the player's
- *   current view.
  */
-function Game(socket, drawing, viewPort) {
+function Game(socket, drawing) {
   this.socket = socket;
-
   this.drawing = drawing;
-  this.viewPort = viewPort;
 
   this.selfPlayer = null;
   this.otherPlayers = [];
-
   this.animationFrameId = 0;
 }
 
@@ -32,13 +27,16 @@ function Game(socket, drawing, viewPort) {
  * @return {Game}
  */
 Game.create = function(socket, canvasElement) {
-  canvasElement.width = Constants.CANVAS_WIDTH;
-  canvasElement.height = Constants.CANVAS_HEIGHT;
+  /**
+   * Set the aspect ratio of the canvas.
+   */
+  canvasElement.width = 800;
+  canvasElement.height = 600;
+  canvasElement.style.border = '1px solid black';
   var canvasContext = canvasElement.getContext('2d');
 
   var drawing = Drawing.create(canvasContext);
-  var viewPort = ViewPort.create();
-  return new Game(socket, drawing, viewPort);
+  return new Game(socket, drawing);
 };
 
 /**
@@ -46,9 +44,11 @@ Game.create = function(socket, canvasElement) {
  * event handlers.
  */
 Game.prototype.init = function() {
-  this.socket.on('update', bind(this, function(data) {
-    this.receiveGameState(data);
-  }));
+  var context = this;
+  this.socket.on('update', function(data) {
+    context.receiveGameState(data);
+  });
+  this.socket.emit('player-join');
 };
 
 /**
@@ -56,7 +56,7 @@ Game.prototype.init = function() {
  */
 Game.prototype.animate = function() {
   this.animationFrameId = window.requestAnimationFrame(
-      bind(this, this.update));
+      Util.bind(this, this.update));
 };
 
 /**
@@ -72,8 +72,8 @@ Game.prototype.stopAnimation = function() {
  * @param {Object} state The game state received from the server.
  */
 Game.prototype.receiveGameState = function(state) {
-  this.self = state['self'];
-  this.players = state['players'];
+  this.selfPlayer = state['self'];
+  this.otherPlayers = state['players'];
 };
 
 /**
@@ -81,17 +81,18 @@ Game.prototype.receiveGameState = function(state) {
  * server.
  */
 Game.prototype.update = function() {
-  if (this.self) {
-    // Emits an event for the containing the player's intention to the server.
-    var packet = {
+  if (this.selfPlayer) {
+    // Emits an event for the containing the player's input.
+    this.socket.emit('player-action', {
       keyboardState: {
+        left: Input.LEFT,
+        right: Input.RIGHT,
+        up: Input.UP,
+        down: Input.DOWN
       }
-    };
-    this.socket.emit('player-action', packet);
+    });
   }
-
   this.draw();
-
   this.animate();
 };
 
@@ -101,5 +102,4 @@ Game.prototype.update = function() {
 Game.prototype.draw = function() {
   // Clear the canvas.
   this.drawing.clear();
-
 };

@@ -4,7 +4,7 @@
  */
 
 const DEV_MODE = process.argv.indexOf('--dev') != -1;
-const FRAME_RATE = 1000 / 60;
+const FPS = 60;
 const PORT = process.env.PORT || 5000;
 
 // Dependencies.
@@ -13,12 +13,15 @@ const http = require('http');
 const morgan = require('morgan');
 const socketIO = require('socket.io');
 
+const Game = require('./lib/Game');
+
 // Initialization.
 var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
+var game = Game.create();
 
-app.set('port', PORT_NUMBER);
+app.set('port', PORT);
 app.set('view engine', 'pug');
 
 app.use(morgan('dev'));
@@ -31,17 +34,30 @@ app.use('/', (request, response) => {
 
 /**
  * Server side input handler, modifies the state of the players and the
- * game based on the input it receives. Everything runs asynchronously with
- * the game loop.
+ * game based on the input it receives. Everything here runs asynchronously.
  */
-io.on('connection', game.getSocketCallback());
+io.on('connection', (socket) => {
+  socket.on('player-join', () => {
+    console.log('joined');
+    game.addNewPlayer(socket);
+  });
+
+  socket.on('player-action', (data) => {
+    console.log(data);
+  });
+
+  socket.on('disconnect', () => {
+    game.removePlayer(socket.id);
+  })
+});
 
 /**
- * Server side game loop.
+ * Server side game loop. This runs at 60 frames per second.
  */
 setInterval(() => {
   game.update();
-}, FRAME_RATE);
+  game.sendState();
+}, 1000 / FPS);
 
 /**
  * Starts the server.

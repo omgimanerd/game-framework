@@ -12,6 +12,51 @@ function Util() {
 }
 
 /**
+ * This function takes an object and defines getter and setter methods for
+ * it. This is best demonstrated with an example:
+ *
+ * Util.splitProperties(object, ['x', 'y'], 'position')
+ * will assign object.x as the getter/setter for object['position'][0]
+ * and object.y as the getter/setter for object['position'][1]
+ *
+ * Util.splitProperties(object, ['vx', 'vy', 'vz'], 'velocity')
+ * will assign object.vx as the getter/setter for object['velocity'][0],
+ * object.vy as the getter/setter for object['velocity'][1],
+ * and object.vz as the getter/setter for object['velocity'][2].
+ * @param {Object} object The object to apply the properties to
+ * @param {Array.<string>} propertyNames The property names to apply
+ * @param {string} propertyFrom The property to split
+ */
+Util.splitProperties = function(object, propertyNames, propertyFrom) {
+  for (var i = 0; i < propertyNames.length; ++i) {
+    (function(j) {
+      Object.defineProperty(object, propertyNames[j], {
+        enumerable: true,
+        configurable: true,
+        get: function() {
+          return this[propertyFrom][j];
+        },
+        set: function(property) {
+          this[propertyFrom][j] = property;
+        }
+      });
+    })(i);
+  }
+};
+
+/**
+ * Allows for ES5 class inheritance by implementing functionality for a
+ * child class to inherit from a parent class.
+ * @param {Object} parent The parent object to inherit from
+ * @param {Object} child The child object that inherits the parent
+ */
+Util.extend = function(parent, child) {
+  child.prototype = Object.create(parent.prototype);
+  child.prototype.constructor = child;
+  child.prototype.parent = parent.prototype;
+};
+
+/**
  * Binds a function to a context, useful for assigning event handlers and
  * function callbacks.
  * @param {Object} context The context to assign the method to.
