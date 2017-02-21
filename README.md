@@ -1,5 +1,7 @@
 # game-framework
-This is a generic multiplayer game framework used by us.
+This is a generic multiplayer game framework used by me. The master branch
+contains a minimal implementation of multiplayer interaction on top of which
+more functionality can be added.
 
 ## Games Built With This Framework
   - [tankanarchy](https://www.github.com/penumbragames/tankanarchy)
