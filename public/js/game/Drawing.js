@@ -44,12 +44,20 @@ Drawing.prototype.clear = function() {
   this.context.clearRect(0, 0, canvas.width, canvas.height);
 };
 
-/**
- * Example draw function.
- */
-// Drawing.prototype.drawPlayer = function(x, y, size) {
-//   this.context.save();
-//   this.context.translate(x, y);
-//   this.context.drawImage(this.images['player'], -size / 2, -size / 2, size, size);
-//   this.context.restore();
-// };
+Drawing.prototype.drawSelf = function(x, y, size) {
+  this.context.save();
+  this.context.beginPath();
+  this.context.fillStyle = 'green';
+  this.context.arc(x, y, size, 0, Math.PI * 2);
+  this.context.fill();
+  this.context.restore();
+};
+
+Drawing.prototype.drawOther = function(x, y, size) {
+  this.context.save();
+  this.context.beginPath();
+  this.context.fillStyle = 'red';
+  this.context.arc(x, y, size, 0, Math.PI * 2);
+  this.context.fill();
+  this.context.restore();
+};

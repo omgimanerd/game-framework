@@ -91,8 +91,8 @@ Game.prototype.update = function() {
         down: Input.DOWN
       }
     });
+    this.draw();
   }
-  this.draw();
   this.animate();
 };
 
@@ -102,4 +102,18 @@ Game.prototype.update = function() {
 Game.prototype.draw = function() {
   // Clear the canvas.
   this.drawing.clear();
+
+  this.drawing.drawSelf(
+    this.selfPlayer.x,
+    this.selfPlayer.y,
+    this.selfPlayer.hitbox
+  );
+  console.log(this.otherPlayers);
+  for (var player of this.otherPlayers) {
+    this.drawing.drawOther(
+      player.x,
+      player.y,
+      player.hitbox
+    );
+  }
 };

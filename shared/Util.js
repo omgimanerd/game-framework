@@ -46,13 +46,25 @@ Util.splitProperties = function(object, propertyNames, propertyFrom) {
 
 /**
  * Allows for ES5 class inheritance by implementing functionality for a
- * child class to inherit from a parent class.
- * @param {Object} parent The parent object to inherit from
+ * child class to inherit from a parent class. (TypeScript-y)
  * @param {Object} child The child object that inherits the parent
+ * @param {Object} parent The parent object to inherit from
  */
-Util.extend = function(parent, child) {
-  child.prototype = Object.create(parent.prototype);
-  child.prototype.constructor = child;
+Util.extend = function (child, parent) {
+  for (var parentPropertyName in parent) {
+    if (parent.hasOwnProperty(parentPropertyName)) {
+      child[parentPropertyName] = parent[parentPropertyName];
+    }
+  }
+  function __() {
+    this.constructor = child;
+  }
+  if (parent === null) {
+    child.prototype = Object.create(parent);
+  } else {
+    __.prototype = parent.prototype;
+    child.prototype = new __();
+  }
   child.prototype.parent = parent.prototype;
 };
 

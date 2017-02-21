@@ -38,12 +38,11 @@ app.use('/', (request, response) => {
  */
 io.on('connection', (socket) => {
   socket.on('player-join', () => {
-    console.log('joined');
     game.addNewPlayer(socket);
   });
 
   socket.on('player-action', (data) => {
-    console.log(data);
+    game.updatePlayerOnInput(socket.id, data);
   });
 
   socket.on('disconnect', () => {
