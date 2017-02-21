@@ -24,7 +24,7 @@ function Util() {
  * object.vy as the getter/setter for object['velocity'][1],
  * and object.vz as the getter/setter for object['velocity'][2].
  * @param {Object} object The object to apply the properties to
- * @param {Array.<string>} propertyNames The property names to apply
+ * @param {Array<string>} propertyNames The property names to apply
  * @param {string} propertyFrom The property to split
  */
 Util.splitProperties = function(object, propertyNames, propertyFrom) {
@@ -46,25 +46,12 @@ Util.splitProperties = function(object, propertyNames, propertyFrom) {
 
 /**
  * Allows for ES5 class inheritance by implementing functionality for a
- * child class to inherit from a parent class. (TypeScript-y)
+ * child class to inherit from a parent class.
  * @param {Object} child The child object that inherits the parent
  * @param {Object} parent The parent object to inherit from
  */
 Util.extend = function (child, parent) {
-  for (var parentPropertyName in parent) {
-    if (parent.hasOwnProperty(parentPropertyName)) {
-      child[parentPropertyName] = parent[parentPropertyName];
-    }
-  }
-  function __() {
-    this.constructor = child;
-  }
-  if (parent === null) {
-    child.prototype = Object.create(parent);
-  } else {
-    __.prototype = parent.prototype;
-    child.prototype = new __();
-  }
+  child.prototype = Object.create(parent);
   child.prototype.parent = parent.prototype;
 };
 
@@ -110,7 +97,7 @@ Util.linearScale = function(x, a1, a2, b1, b2) {
 
 /**
  * Returns the sum of all the elements in an array.
- * @param {Array.<number>} array An array to sum.
+ * @param {Array<number>} array An array to sum.
  * @return {number}
  */
 Util.sum = function(array) {
@@ -119,8 +106,8 @@ Util.sum = function(array) {
 
 /**
  * Returns the Manhattan Distance between two points.
- * @param {Array.<number>} p1 The first point.
- * @param {Array.<number>} p2 The second point.
+ * @param {Array<number>} p1 The first point.
+ * @param {Array<number>} p2 The second point.
  * @return {number}
  */
 Util.getManhattanDistance = function(p1, p2) {
@@ -134,8 +121,8 @@ Util.getManhattanDistance = function(p1, p2) {
 
 /**
  * Returns the squared Euclidean distance between two points.
- * @param {Array.<number>} p1 The first point.
- * @param {Array.<number>} p2 The second point.
+ * @param {Array<number>} p1 The first point.
+ * @param {Array<number>} p2 The second point.
  * @return {number}
  */
 Util.getEuclideanDistance2 = function(p1, p2) {
@@ -149,8 +136,8 @@ Util.getEuclideanDistance2 = function(p1, p2) {
 
 /**
  * Returns the true Euclidean distance between two points.
- * @param {Array.<number>} p1 The first point.
- * @param {Array.<number>} p2 The second point.
+ * @param {Array<number>} p1 The first point.
+ * @param {Array<number>} p2 The second point.
  * @return {number}
  */
 Util.getEuclideanDistance = function(p1, p2) {
@@ -222,7 +209,7 @@ Util.randRangeInt = function(min, max) {
 
 /**
  * Returns a random element in a given array.
- * @param {Array.<*>} array The array from which to select a random
+ * @param {Array<*>} array The array from which to select a random
  *   element from.
  * @return {*}
  */

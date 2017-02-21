@@ -3,6 +3,11 @@
  * @author alvin@omgimanerd.tech (Alvin Lin)
  */
 
+/**
+ * Constructor for a Sound object
+ * @param {Object} sounds An object containing the howler.js Howl
+ *   objects.
+ */
 function Sound(sounds) {
   this.sounds = sounds;
 }
@@ -23,6 +28,10 @@ Sound.BASE_URL = '/public/sound/';
  */
 Sound.SOUND_SRCS = {};
 
+/**
+ * Factory method for creating a Sound object.
+ * @return {Sound}
+ */
 Sound.create = function() {
   var sounds = {};
   for (var key in Sound.SOUND_SRCS) {

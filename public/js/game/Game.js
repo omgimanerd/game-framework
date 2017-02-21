@@ -103,12 +103,14 @@ Game.prototype.draw = function() {
   // Clear the canvas.
   this.drawing.clear();
 
+  // Draw yourself
   this.drawing.drawSelf(
     this.selfPlayer.x,
     this.selfPlayer.y,
     this.selfPlayer.hitbox
   );
-  console.log(this.otherPlayers);
+
+  // Draw the other players
   for (var player of this.otherPlayers) {
     this.drawing.drawOther(
       player.x,
