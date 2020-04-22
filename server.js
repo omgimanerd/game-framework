@@ -25,6 +25,7 @@ app.set('port', PORT);
 app.set('view engine', 'pug');
 
 app.use(morgan('dev'));
+app.use('/node_modules', express.static(__dirname + '/node_modules'))
 app.use('/public', express.static(__dirname + '/public'));
 app.use('/shared', express.static(__dirname + '/shared'));
 
